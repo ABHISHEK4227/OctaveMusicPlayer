@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="sayantan.mediaplayback">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/play"
+        android:label="Octave"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".SplashScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".MainActivity"
+            android:noHistory="true"
+            android:label="SongOne"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity android:name=".song_two"
+            android:label="SongTwo"
+            android:noHistory="true"
+            android:screenOrientation="portrait">
+
+
+        </activity>
+        <activity android:name=".song_three"
+            android:label="SongThree"
+            android:noHistory="true"
+            android:screenOrientation="portrait">
+        </activity>
+
+
+    </application>
+
+
+
+
+</manifest>
