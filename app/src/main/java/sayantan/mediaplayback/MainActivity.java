@@ -14,6 +14,7 @@ public class MainActivity extends Activity  {
     SeekBar seek_bar;
     ImageButton playpause,next;
     MediaPlayer player;
+    //Chal Betichod isbar achha company lana
 
     boolean isPlaying = false;
 
