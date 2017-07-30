@@ -14,10 +14,10 @@
 
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/songTitle"
         android:layout_width="300dp"
         android:layout_height="40dp"
-        android:text="BlackBear  IDFC"
+        android:text=""
         android:textSize="30dp"
         android:layout_marginStart="14dp"
         android:layout_above="@+id/prev"
@@ -30,7 +30,6 @@
         android:layout_height="270dp"
         android:paddingTop="20dp"
         android:src="@drawable/idfc_art"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
     <ImageButton
