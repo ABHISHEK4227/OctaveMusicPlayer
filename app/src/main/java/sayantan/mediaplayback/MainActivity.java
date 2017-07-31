@@ -20,27 +20,26 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends Activity  {
+
+    //Initializing variables and objects
     SeekBar seek_bar;
     ImageButton playpause,next;
-    static MediaPlayer player;
+    static MediaPlayer player; //Variable is static to allow only one copy in the memory
     TextView Title;
     ArrayList<File> songList;
     int position;
-
     boolean isPlaying = true;
-
     Handler seekHandler=new Handler();
+    //--------------------------------------------------
 
 @Override
     public void onCreate(Bundle savedInstanceState){
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-
     getInit();
     seekUpdation();
-
-
 }
+
 
 public void getInit()
 {
@@ -57,28 +56,21 @@ public void getInit()
         player.release();
     }
 
-
-
     //Getting intents
     Intent i=getIntent();
     Bundle b=i.getExtras();
-    songList=(ArrayList)b.getParcelableArrayList("songlist");
+    songList=(ArrayList)b.getParcelableArrayList("songlist"); //Getting The Entire ArrayList
     position =b.getInt("pos");
-
 
     Title.setText(songList.get(position).getName().toString());
 
 
     //Creating URI object
-    Uri ur=Uri.parse(songList.get(position).toString());
-
-    player=MediaPlayer.create(this,ur);
-    player.start();
+    playMusic();
     playpause.setImageResource(R.drawable.pause1);
     seek_bar.setMax(player.getDuration());
 
-
-
+    //Add Listener to seekbar
     seek_bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
         @Override
         public void onStartTrackingTouch(SeekBar seekBar) {}
@@ -90,16 +82,16 @@ public void getInit()
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             if(player!=null && fromUser){
                 player.seekTo(progress);
-            }
-        }
+            }}
     });
+    //------------------------------------------------------
+
 
 }
 
 
 Runnable run=new Runnable()
 {
-
     @Override
     public void run(){
         seekUpdation();
@@ -108,13 +100,13 @@ Runnable run=new Runnable()
 };
 
 public void seekUpdation(){
-
     seek_bar.setProgress(player.getCurrentPosition());
     seekHandler.postDelayed(run,1000);
 
-
 }
 
+
+//Registering Button Click Events
 
 public void buttonOnClick(View view){
 switch (view.getId()){
@@ -137,8 +129,7 @@ switch (view.getId()){
         player.stop();
         player.release();
 
-        player=MediaPlayer.create(getApplicationContext(),urk);
-        player.start();
+        playMusic();
         Title.setText(songList.get(position).getName().toString());
         break;
     }
@@ -148,50 +139,36 @@ switch (view.getId()){
             position = songList.size() - 1;
         else
             position = position - 1;
-        Uri urr = Uri.parse(songList.get(position).toString());
+
         player.stop();
         player.release();
 
-        player = MediaPlayer.create(getApplicationContext(), urr);
-        player.start();
+        playMusic();
         Title.setText(songList.get(position).getName().toString());
         break;
     }
 }
+}
 
 
 
-
-
-
+public void playMusic(){
+    Uri ur=Uri.parse(songList.get(position).toString());
+    player=MediaPlayer.create(getApplicationContext(),ur);
+    player.start();
+    seek_bar.setMax(player.getDuration());
+    seekUpdation();
+    player.setOnCompletionListener(new MediaPlayer.OnCompletionListener(){
+        @Override
+        public void onCompletion(MediaPlayer mp) {
+            position=(position+1)%songList.size();
+            playMusic();
+            Title.setText(songList.get(position).getName().toString());
+        }
+    });
 
 
 }
-
-    public ArrayList<File> songs(File root){
-        File files[]=root.listFiles();
-
-        ArrayList<File> arr=new ArrayList<File>();
-
-        for(File f: files){
-            if(f.isDirectory() && !f.isHidden()){
-
-                arr.addAll(songs(f));
-            }else{
-
-                if(f.getName().endsWith(".mp3") || f.getName().endsWith(".wav")){
-                    arr.add(f);
-
-                }else{
-
-
-                }
-
-            }
-        }
-        return arr;
-
-    }
 
 
 }
